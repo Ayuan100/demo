@@ -1,0 +1,12 @@
+[
+	{
+		"type": "A",
+		"inPortNumber": 2,
+		"outPortNumber": 2
+	},
+	{
+		"type": "B",
+		"inPortNumber": 1,
+		"outPortNumber": 1
+	}
+]

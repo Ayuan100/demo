@@ -1,0 +1,31 @@
+body, html {
+	height: 100%;
+	width: 100%;
+	margin: 0;
+
+}
+#left {
+	float: left;
+	width: 200px;
+	height: 100%;
+	padding-top: 50px;
+	background-color: #e0e0e0;
+}
+.center {
+	display: block;
+	position: absolute;
+	left: 200px;
+	right: 200px;
+	box-sizing: border-box;
+	height: 100%;
+	overflow: auto;
+
+	border: 1px solid #eee;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05);
+}
+#right {
+	float: right;
+	width: 200px;
+	height: 100%;
+	background-color: #e0e0e0;
+}

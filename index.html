@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<html>
+	<head>
+		<title>DEMO</title>
+	</head>
+	<body>
+		<link rel="stylesheet" type="text/css" href="css/node.css">
+		<link rel="stylesheet" type="text/css" href="css/index.css">
+
+		<div id="left">
+		</div>
+
+		<div class="center" id="center">
+		</div>
+
+		<div class="center">
+			<svg width="100%" height="98%" version="1.1" xmlns="http://www.w3.org/2000/svg">
+
+			<defs>  
+			    <marker id="markerArrow" markerWidth="13" markerHeight="13" markerUnits="userSpaceOnUse" refx="6" refy="6" orient="auto">  
+			        <path d="M2,2 L2,11 L10,6 L2,2" fill="grey" stroke-width="0.5" />  
+			    </marker>  
+			</defs> 
+				<!-- <path d="M250 150 L150 350 L350 350 Z" /> -->
+				<!-- <path class="curve" d="M406 164 Q 406 194 374.5 185 T 343 206"   
+			        marker-end="url(#markerArrow)" />
+
+				<path class='curve' class="svg" d="M10 10 Q 100 100 194 375 T 300 206" marker-end="url(#markerArrow)" /> -->
+			</svg>
+		</div>
+		
+		
+
+		<div id="right">	
+		</div>
+
+		<script type="text/javascript" src="lib/js/handlebars-v4.0.10.js"></script>
+		<script type="text/javascript" src="lib/js/jquery-3.2.1.min.js"></script>
+ 		<script id="node-template" type="text/x-handlebars-template">
+ 				<div class="node" tabindex="-1">
+ 					{{#if model}}
+						<div class="in-ports">
+							{{#each inports}}
+							<span></span>
+							<div class="port unconnected"></div>
+							<span></span>
+							{{/each}}
+						</div>
+						
+						<div class="out-ports">
+							{{#each outports}}
+							<span></span>
+							<div class="port unconnected"></div>
+							<span></span>
+							{{/each}}
+						</div>
+					{{/if}}
+				<span class="icon"></span>
+				<span class="type">
+					{{#if model}}
+						{{model.type}}
+					{{else}}
+						{{type}}
+					{{/if}}
+				</span>
+				{{#if model}}
+				<input contenteditable="true" maxlength="6" class="name">{{name}}</input>
+				{{/if}}
+			</div>	
+ 		</script>
+ 		<script type="text/javascript" src="js/template.js"></script>
+ 		<script type="text/javascript" src="js/svg.js"></script>
+
+ 		<script type="text/javascript" src="js/model.js"></script>
+ 		<script type="text/javascript" src="js/port.js"></script>
+ 		<script type="text/javascript" src="js/node.js"></script>
+ 		<script type="text/javascript" src="js/view.js"></script>
+ 		<script type="text/javascript" src="js/event.js"></script>
+
+		<script type="text/javascript" src="js/main.js"></script>
+
+	</body>
+</html>
+
+
