@@ -1,14 +1,13 @@
 /*元素图标*/
 .node {
-	box-sizing: border-box;
+	/*box-sizing: border-box;*/
 	margin: 0;
 	height: 25px;
-	width: 100px;
+	width: 220px;
 	border: 1px solid #000;
 	border-radius: 10px;
 	z-index: 999;
 	display: table;
-	vertical-align: middle;
 }
 .node:focus{
 	outline: none;
@@ -20,7 +19,6 @@
 .icon {
 	float: left;
 	display: table-cell;
-	/*margin-top: -1px;*/
 	height: 20px;
 	width: 20px;
 	border-radius: 100%;
@@ -44,26 +42,33 @@
 	border: 1px solid gray;
 	border-radius: 100%;
 }
-.type {
+.type, .index{
 	display: inline-block;
-	position: absolute;
+	/*position: absolute;*/
 	top: 0;
 	left: 20px;
 	height: 100%;
+	font-size: 12px;
 	line-height: 100%;
+	/*width: 50px;*/
+}
+.type:after, .index:after{
+	content: '- ';
+	color: gray;
+	margin-right: 5px;
 }
 .name {
 	outline: none;
 	border: 0;
 	display: inline-block;
-	position: absolute;
-	top: 2px;
-	left: 40px;
-	width: 50px;
-	height: 18px;
-	
+	width: 60px;
+	padding-bottom: 2px;
+	margin-top: -5px;
+	background-color: transparent;
 }
-
+.name:focus {
+	background-color: white;
+}
 
 .node-model {
 	position: relative;
@@ -74,16 +79,16 @@
 }
 .in-ports {
 	position: absolute;
-	top: -10px;
+	top: -7px;
 	width: 100%;
-	height: 10px;
+	height: 6px;
 	display: table;
 }
 .out-ports {
 	position: absolute;
-	bottom: -10px;
+	bottom: -7px;
 	width: 100%;
-	height: 10px;
+	height: 6px;
 	display: table;
 }
 .out-ports .port {
@@ -113,10 +118,9 @@
 	stroke: gray;
 }
 .curve:focus{
-	/*outline: none;*/
+	outline: none;
 }
 .curve:hover {
 	stroke-width: 3;
 }
-
 

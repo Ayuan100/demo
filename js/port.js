@@ -1,15 +1,15 @@
 function Port(node, id, type){
 	this.node = node;
-	this.id = id;
+	this.id = node.id + '-' + type + '-' + id;
 	this.type = type;
-	this.connectedPort = null;
 	this.isConnect = false;
-	this.path = null;
+	this.connectedPort = null;
+	this.curve = null;
 }
-Port.prototype.connectTo = function(port, path){
+Port.prototype.connectTo = function(port, curve){
 	this.connectedPort = port;
 	this.isConnect = true;
-	this.path = path;
+	this.curve = curve;
 }
 Port.prototype.check = function(inport){
 	if(inport){
@@ -20,21 +20,25 @@ Port.prototype.check = function(inport){
 Port.prototype.disconnect = function(){
 	// console.log(this);
 	var connectedPort = this.connectedPort;
-	var path = this.path;
+	var curve = this.curve;
 
-	if(path) Path.deletePath(this.path);
 	this.connectedPort = null;
-	this.path = null;
+	this.curve = null;
 	if(this.isConnect){
 		this.isConnect = false;
 		View.disconnectPort(this);
 	}
 
+	if(curve) curve.delete();
 	if(connectedPort){
 		connectedPort.disconnect();
 	}
 }
-
+Port.prototype.move = function(){
+	if(this.isConnect){
+		this.curve.repaint();
+	}
+}
 Port.connect = function(outport, inport, path){
 	// console.log('connect ', outport, inport);
 	outport.connectTo(inport, path);

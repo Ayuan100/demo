@@ -8,8 +8,3 @@
         return $(compiled[template](data));
     };
  })(jQuery)
-
-// console.log($('#node-template').template({type:'A', name:'first'}).appendTo('#center').attr('id','first') );
-
- // $('#test1').template($('#template'), { name: "Alan" });
-  // $('#test2').template($('#template'), { name: "Alan" });

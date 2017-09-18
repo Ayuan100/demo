@@ -1,12 +1,32 @@
 [
 	{
-		"type": "A",
+		"type": "Model Type A",
+		"inPortNumber": 1,
+		"outPortNumber": 1
+	},
+	{
+		"type": "Model Type B",
 		"inPortNumber": 2,
 		"outPortNumber": 2
 	},
 	{
-		"type": "B",
+		"type": "Model Type C",
+		"inPortNumber": 3,
+		"outPortNumber": 3
+	},
+	{
+		"type": "Model Type D",
+		"inPortNumber": 4,
+		"outPortNumber": 4
+	},
+	{
+		"type": "Model Type E",
 		"inPortNumber": 1,
+		"outPortNumber": 2
+	},
+	{
+		"type": "Model Type F",
+		"inPortNumber": 2,
 		"outPortNumber": 1
 	}
 ]

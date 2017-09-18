@@ -1,11 +1,13 @@
 function addModelEvent(model){
-	var target = $('#'+model.type);
+	var target = $('#'+model.id);
+	// console.log('addModelEvent',target);
 	// target.focus(function(e){
-	// 	console.log('focused');
+		// console.log('focused');
 	// });
 	// 鼠标按下时变亮，开始可拖动模式
 	target.mousedown(function(e){
 		// target.addClass('lightup');
+		// console.log('click');
 		// 在body范围内可移动
         var scope = $('body');
 		//记录鼠标相对node的坐标 
@@ -23,7 +25,7 @@ function addModelEvent(model){
         		View.setFocus($('#'+newNode.id));
             }
             
-			View.move($('#'+newNode.id), scope, e.pageX, e.pageY, offsetX, offsetY);
+			View.moveNode($('#'+newNode.id), scope, e.pageX, e.pageY, offsetX, offsetY);
 			return false;
 		});
 		// 鼠标松开结束拖动模式，放下newNode
@@ -50,7 +52,7 @@ function addNodeEvent(node){
 	var target = $('#'+node.id);
 	// 鼠标按下时变亮，开始可拖动模式
 	target.mousedown(function(e){
-		// console.log(e.which, e.buttons);
+		// console.log(e.target);
 		e = e || window.event;
 		// 不是鼠标左键，不处理
 		if(e.which != 1){
@@ -63,12 +65,12 @@ function addNodeEvent(node){
 		if(mousedownTarget.hasClass('name')){
 			return;
 		} 
-		// 如果点到in-port或者已经connected的port，不反应
-		if(View.isInport(mousedownTarget) || View.isConnected(mousedownTarget)){
+		// 如果点到in-port或者unconnected，不反应
+		if(View.isInport(mousedownTarget) || View.isConnected(mousedownTarget) ){
 			return false;
 		}
 
-		// 如果是点到处于unconnected状态的out-port，准备进入connect模式
+		// 如果是点击到out-port且unconnected，准备进入connect模式
 		if(View.isOutport(mousedownTarget)){
 			View.setFocus(mousedownTarget);
 			// console.log(e.target);
@@ -77,46 +79,43 @@ function addNodeEvent(node){
 				console.log('something is wrong!!!');
 				return false;
 			}
-			// 保存out-port和画布圆点的坐标
-			var canvasX = parseInt($('svg').offset().left),
-				canvasY = - parseInt($('svg').offset().top),
-				X = mousedownTarget.offset().left + mousedownTarget.width()/2 + 0 - canvasX,
-				Y = mousedownTarget.offset().top + mousedownTarget.height()/2 + 0.5- canvasY;
+			
 			// console.log(e.pageX, e.pageY, target.offset().left, target.offset().top);
 			
-			var path;
+			
 			// connect模式
 			mousedownTarget.addClass('hover');
 			Model.lightupPortsFor(node);
 
+			var curve = null;
 			// 判断鼠标移动到的port，创建path并随鼠标移动
 			$(document).mousemove(function(e){
 				// console.log(e);
-				var endX = e.pageX-canvasX,
-					endY = e.pageY-canvasY;
+
+				// 准备画线
+				if(!curve){
+					curve = new Curve(outPort, mousedownTarget);
+					// 刚开始拖动，先不paint
+					return;
+				}
+				else curve.setEnd(e.pageX, e.pageY);
 
 				var mousemoveTarget = $(e.target);
-				// 鼠标移到可连接的inport上时，自动完成连线
+				// 鼠标移到可连接的inport上时，自动计算连线位置
 				if(View.isInport(mousemoveTarget) && !View.isConnected(mousemoveTarget)){
 					// console.log(target.parent());
 					var inPort = View.getPort(mousemoveTarget);
-					if(inPort==null){
+					if(inPort == null){
 						console.log('something is wrong!!!');
 						return false;
 					}
 					// console.log(inPort);
 					// console.log(inNodeInfo);
 					if(outPort.check(inPort)){
-						endX = mousemoveTarget.offset().left + mousemoveTarget.width()/2 + 0 - canvasX,
-						endY = mousemoveTarget.offset().top + mousemoveTarget.height()/2 - 7- canvasY;
+						curve.setEndTarget(mousemoveTarget);
 					}	
 				}
-				// 画线
-				if(!path){
-					path = Path.newPath();
-				}
-				else Path.setPath(path, X, Y, endX, endY);
-				
+				curve.paint();	
 			});
 			// 松开鼠标 - 完成连线并还原ports
 			$(document).mouseup(function(e){
@@ -130,15 +129,17 @@ function addNodeEvent(node){
 					// console.log('llll',inPort);
 					if(outPort.check(inPort)){
 						flag = true;
-						Port.connect(outPort, inPort, path);
+						Port.connect(outPort, inPort, curve);
 						View.setConnected(mousedownTarget);
 						View.setConnected(mouseupTarget);
-						Path.savePath(path, outPort, inPort, mousedownTarget, mouseupTarget);
+						if(curve) curve.save(inPort, mouseupTarget);
+						// Path.savePath(path, outPort, inPort, mousedownTarget, mouseupTarget);
 						// 设置当前连线获得焦点，两端port高亮
 						View.setFocus(mousedownTarget, mouseupTarget);
 					}
 				}
-				if(path && flag==false) Path.deletePath(path);
+				if(curve && flag==false ) curve.delete();
+					// Path.deletePath(path);
 				Model.restorePorts();
 				$(document).unbind('mousemove');
 				$(document).unbind('mouseup');
@@ -158,8 +159,9 @@ function addNodeEvent(node){
             
             // 鼠标拖动时移动
 			$(document).mousemove(function(e){
-				View.move(target, scope, e.pageX, e.pageY, myX, myY);
-				
+
+				View.moveNode(target, scope, e.pageX, e.pageY, myX, myY);
+				node.movePorts();
 				return false;
 			});
 		
@@ -188,13 +190,12 @@ function addKeydownEvent(node){
 	// console.log(target);
 
 	target.keydown(function(e){
-		console.log('keydown');
+		// console.log('keydown');
 		// 忽略输入框里的键盘事件
 		if($(e.target).hasClass('name')) return;
 
 		if(e.keyCode == 8){
 			node.delete();
-			$(document).unbind('keydown');
 		}
 	});
 }

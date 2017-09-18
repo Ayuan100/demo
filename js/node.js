@@ -5,19 +5,23 @@ function Node(model, name){
 	}
 	name = name || '';
 	// console.log('create node: '+name);
-	this.model = model;
 	this.name = name;
-	this.id = model.type + '-' + name;
 	this.index = -1;
-	this.inports = new Array(model.inPortNumber);
+	this.id = 'node-' + model.id + '-' + (model.count+1);
+	this.model = model;
+	this.inports = new Array(this.model.inPortNumber);
+	this.outports = new Array(this.model.outPortNumber);
+
+	//初始化inports和outports数组，HTML模板里需要这些数据
 	for(var i = 0; i < this.inports.length; i++){
 		this.inports[i] = new Port(this, i, '.in-ports');
 	}
-	this.outports = new Array(model.outPortNumber);
 	for(var i = 0; i < this.outports.length; i++){
 		this.outports[i] = new Port(this, i, '.out-ports');
 	}
+	
 	View.createNode(this);
+
 };
 Node.prototype.delete = function(){
 	if(this.index >=0){
@@ -35,11 +39,12 @@ Node.prototype.delete = function(){
 };
 // 转为画布区的正式node
 Node.prototype.regular = function(){
+	
 	// 加到所在的model队列中
 	this.index = this.model.add(this)-1;
 	var oldId = this.id;
-	this.id = this.model.type + '-' + this.model.count;
-	this.name = this.model.count;
+	this.id = 'node-'+this.model.id + '-' + this.model.count;
+	this.name = '';
 	
 	View.regularNode(this, oldId);
 };
@@ -69,3 +74,11 @@ Node.prototype.connectTo = function(path, outId, node, inId){
 	Path.savePath(path, this.outports[outId], node.inports[inId]);
 	return true;
 }
+Node.prototype.movePorts = function() {
+	for(var i = 0; i < this.inports.length; i++){
+		this.inports[i].move();
+	}
+	for(var i = 0; i < this.outports.length; i++){
+		this.outports[i].move();
+	}
+};

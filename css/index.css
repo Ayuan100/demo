@@ -6,16 +6,19 @@ body, html {
 }
 #left {
 	float: left;
-	width: 200px;
+	width: 300px;
+	box-sizing: border-box;
 	height: 100%;
 	padding-top: 50px;
+	padding-left: 20px;
+	padding-right: 20px;
 	background-color: #e0e0e0;
 }
 .center {
 	display: block;
 	position: absolute;
-	left: 200px;
-	right: 200px;
+	left: 300px;
+	right: 1px;
 	box-sizing: border-box;
 	height: 100%;
 	overflow: auto;
@@ -23,9 +26,18 @@ body, html {
 	border: 1px solid #eee;
     box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05);
 }
-#right {
+/*#right {
 	float: right;
 	width: 200px;
 	height: 100%;
 	background-color: #e0e0e0;
+}*/
+
+#export {
+	text-align: center;
+	width: 100%;
+	margin: 20px auto;
+}
+#export:hover {
+	border: 2px solid green;
 }
