@@ -9,11 +9,11 @@
 > 6. 点击左上角按钮，导出所有数据为json文件并下载
 
 ### 代码结构
-> 1.入口: index.html
-> 2.css/说明:
+> 1. 入口: index.html
+> 2. css/说明:
 		index.css - 页面布局
 		node.css - 节点图标布局
-> 2.js/说明:
+> 3. js/说明:
 		main.js - 初始化
 		model.js - 模型对象
 		node.js - 节点对象
@@ -23,8 +23,8 @@
 		view.js - 有关view的各种处理
 		template.js - handlebars注入jquery
 		event.js - 鼠标键盘事件监听
-> lib/js/: 调用的jquery和handlebars库
-> data/models.json: 模型数据
+> 4. lib/js/: 调用的jquery和handlebars库
+> 5. data/models.json: 模型数据
 
 
 
