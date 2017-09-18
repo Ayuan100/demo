@@ -40,11 +40,11 @@ function initCurve(){
 	};
 	Curve.prototype.setStartTarget = function(target){
 		this.startX = target.offset().left + target.width()/2 + 0 - Curve.canvasX;
-		this.startY = target.offset().top + target.height()/2 + 0.5- Curve.canvasY;
+		this.startY = target.offset().top + target.height()/2 + 1.5- Curve.canvasY;
 	}
 	Curve.prototype.setEndTarget = function(target){
 		this.endX = target.offset().left + target.width()/2 + 0 - Curve.canvasX;
-		this.endY = target.offset().top + target.height()/2 - 7- Curve.canvasY;
+		this.endY = target.offset().top + target.height()/2 - 5- Curve.canvasY;
 	};
 	Curve.prototype.paint = function(){
 		var middleX = (this.startX + this.endX)/2,
